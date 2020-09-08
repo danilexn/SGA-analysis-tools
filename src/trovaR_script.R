@@ -35,13 +35,12 @@
 # ------------------------------
 ### PROGRAM PARAMETERS
 # Directory containing txt SGA files
-DI.ROOT <-
-  "~/Escritorio/SGA_Alfonso/data/allPictures/analysis/"
+DI.ROOT <- "~/Escritorio/SGA_Alfonso/data/allPictures/analysis/"
 # List of phenotypes
-PH.LIST <- c("WT", "1020")
+PH.LIST <- c("WT", "1020_d")
 # List of conditions
 # (if a name begins with number, must be preceded by X (ex: 30 -> "X30"))
-CD.LIST <- c("X30")
+CD.LIST <- c("FOR")
 
 
 ### Significance values
@@ -120,6 +119,12 @@ for (cond in conditions) {
     if (str_count(dir, "/") < 3) {
       next
     }
+    
+    strain_pattern = paste(PH.LIST, collapse="|")
+    if (!grepl(strain_pattern, dir)) {
+      next
+    }
+    
     setwd(dir)
     for (f in list.files(pattern = "*_non-filtered.txt")) {
       dir <- gsub('^\\.|\\.$', '', gsub("/", ".", dir))
@@ -262,3 +267,4 @@ for (i in 1:length(P.VALUE)) {
   heat_plotting(PL.SAVE, VAL.NAM[i], SGA_analysis)
   save_value_table(FS.SAVE, VAL.NAM[i], SGA_analysis_text)
 }
+
